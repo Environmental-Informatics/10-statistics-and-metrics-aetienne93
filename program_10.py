@@ -243,7 +243,17 @@ def GetMonthlyAverages(MoDataDF):
     #Calculate averages for all 12 months of 'site_no', 'Mean Flow', 
     #'Coeff Var', 'Tqmean', 'R-B Index'
     colNames = ['site_no', 'Mean Flow', 'Coeff Var', 'Tqmean', 'R-B Index']
-    MonthlyAverages = pd.DataFrame(0, index=[1,2,3,4,5,6,7,8,9,19,11,12], columns = colNames)
+    MonthlyAverages = pd.DataFrame(0, index=range(1,13), columns = colNames)
+    a=[3,4,5,6,7,8,9,10,11,0,1,2]
+    idx=0
+    for i in range(12):
+        MonthlyAverages.iloc[idx,0] = MoDataDF['site_no'][::12].mean()
+        MonthlyAverages.iloc[idx,1] = MoDataDF['Mean Flow'][a[idx]::12].mean()
+        MonthlyAverages.iloc[idx,2] = MoDataDF['Coeff Var'][a[idx]::12].mean()
+        MonthlyAverages.iloc[idx,3] = MoDataDF['Tqmean'][a[idx]::12].mean()
+        MonthlyAverages.iloc[idx,4] = MoDataDF['R-B Index'][a[idx]::12].mean()
+        idx +=1
+    '''
     #run iterativelythrough each column of the third row in the DataFrame. 
     #Site number should be the same for each month here 
     #Start with the site number 
@@ -315,7 +325,7 @@ def GetMonthlyAverages(MoDataDF):
     MonthlyAverages.iloc[9,4]=MoDataDF['R-B Index'][::12].mean()
     MonthlyAverages.iloc[10,4]=MoDataDF['R-B Index'][1::12].mean()
     MonthlyAverages.iloc[11,4]=MoDataDF['R-B Index'][2::12].mean()     
-    
+    '''
     return( MonthlyAverages )
 
 # the following condition checks whether we are running as a script, in which 
