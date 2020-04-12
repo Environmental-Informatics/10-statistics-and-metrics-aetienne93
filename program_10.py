@@ -115,9 +115,15 @@ def CalcTqmean(Qvalues):
        exceeds mean streamflow for each year. TQmean is based on the
        duration rather than the volume of streamflow. The routine returns
        the TQmean value for the given data array."""
+    '''
     Qvalues = Qvalues.dropna()  
     TQmean = ((Qvalues > Qvalues.mean()).sum()/len(Qvalues))
     return ( TQmean )
+    '''
+    #Debugging from Cherkauer 
+    mean = Qvalues.mean()
+    tmpAbove = Qvalues.where( Qvalues > mean )
+    return ( ( tmpAbove / tmpAbove ).sum() / len(Qvalues) )
 
 def CalcRBindex(Qvalues):
     """This function computes the Richards-Baker Flashiness Index
@@ -164,11 +170,15 @@ def CalcExceed3TimesMedian(Qvalues):
        provided) and then counting the number of days with flow greater than 
        3 times that value.   The routine returns the count of events greater 
        than 3 times the median annual flow value for the given data array."""
-    
+    #Debugging from Cherkauer 
+    Qmedian = Qvalues.median()
+    tmpCount = Qvalues.where( Qvalues > 3. * Qmedian )
+    return ( ( tmpCount / tmpCount ).sum() )
+    '''
     Qvalues = Qvalues.dropna()
     median3x = (Qvalues > (Qvalues.median()*3)).sum()
     return ( median3x )
-
+    '''
 def GetAnnualStatistics(DataDF):
     """This function calculates annual descriptive statistcs and metrics for 
     the given streamflow time series.  Values are retuned as a dataframe of
@@ -223,8 +233,7 @@ def GetAnnualStatistics(DataDF):
         CalcExceed3TimesMedian(x)})  
     '''
    
-    
-    
+
     
     return ( WYDataDF )
 
