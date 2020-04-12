@@ -127,7 +127,7 @@ def CalcRBindex(Qvalues):
        values of day-to-day changes in daily discharge volumes
        (pathlength) by total discharge volumes for each year. The
        routine returns the RBindex value for the given data array."""
-    
+    '''
     av = 0
     Qvalues = Qvalues.dropna()
     if sum(Qvalues) > 0:
@@ -137,6 +137,9 @@ def CalcRBindex(Qvalues):
     else:
         RBindex = np.nan
     return ( RBindex )
+    '''
+    tmpSum = np.abs( Qvalues[:-1].values - Qvalues[1:].values ).sum()
+    return ( tmpSum / Qvalues[1:].sum() )
 
 def Calc7Q(Qvalues):
     """This function computes the seven day low flow of an array of 
@@ -146,11 +149,14 @@ def Calc7Q(Qvalues):
        picking the lowest average flow in any 7-day period during
        that year.  The routine returns the 7Q (7-day low flow) value
        for the given data array."""
-       
+    '''   
     Qvalues = Qvalues.dropna()
     val7Q =  min(Qvalues.resample('7D').mean())    
     return ( val7Q )
-
+    '''
+    #tried cherkauer's for debugging
+    tmpRolling = Qvalues.rolling(window=7).mean()
+    return ( tmpRolling.min() )
 def CalcExceed3TimesMedian(Qvalues):
     """This function computes the number of days with flows greater 
        than 3 times the annual median flow. The index is calculated by 
