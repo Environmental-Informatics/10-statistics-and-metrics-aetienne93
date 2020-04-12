@@ -76,10 +76,16 @@ def ClipData( DataDF, startDate, endDate ):
     # quantify the number of missing values
     #I learned this in the last assignment, replaces any values that fall below zero
     #with NAN- and it actually works when graphing
+    '''
     for i in range(0, len(DataDF)-1):
         if DataDF['Discharge'].iloc[i] <= 0:
             DataDF['Discharge'].iloc[i] = np.nan
+    '''
+    #Debugging from cherkauer 
+    # check for neagtive discharge
+    DataDF["Discharge"] = DataDF["Discharge"].where( DataDF["Discharge"] >= 0 )
     
+
     
     MissingValues = DataDF["Discharge"].isna().sum()
     
