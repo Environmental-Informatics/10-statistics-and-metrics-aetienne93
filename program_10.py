@@ -108,7 +108,7 @@ def ClipData( DataDF, startDate, endDate ):
     
     return( DataDF, MissingValues )
      
-def CalcTQmean(Qvalues):
+def CalcTqmean(Qvalues):
     """This function computes the TQmean of a series of data, typically
        a 1 year time series of streamflow, after filtering out NoData
        values.  TQmean is the fraction of time that daily streamflow
@@ -187,7 +187,7 @@ def GetAnnualStatistics(DataDF):
     WYDataDF["Median"] = DataDF["Discharge"].resample('AS-OCT').median()
     WYDataDF["Coeff Var"] = DataDF["Discharge"].resample('AS-OCT').std() / WYDataDF["Mean Flow"] * 100.
     WYDataDF["Skew"] = DataDF["Discharge"].resample('AS-OCT').apply(stats.skew)
-    WYDataDF["TQmean"] = DataDF["Discharge"].resample('AS-OCT').apply(CalcTQmean)
+    WYDataDF["TQmean"] = DataDF["Discharge"].resample('AS-OCT').apply(CalcTqmean)
     WYDataDF["R-B Index"] = DataDF["Discharge"].resample('AS-OCT').apply(CalcRBindex)
     WYDataDF["7Q"] = DataDF["Discharge"].resample('AS-OCT').apply(Calc7Q)
     WYDataDF["3xMedian"] = DataDF["Discharge"].resample('AS-OCT').apply(CalcExceed3TimesMedian)
@@ -239,7 +239,7 @@ def GetMonthlyStatistics(DataDF):
     MoDataDF = DataDF.resample('MS').mean()
     MoDataDF.rename(columns={"Discharge":"Mean Flow"}, inplace=True)
     MoDataDF["Coeff Var"] = DataDF["Discharge"].resample('MS').std() / MoDataDF["Mean Flow"] * 100.
-    MoDataDF["TQmean"] = DataDF["Discharge"].resample('MS').apply(CalcTQmean)
+    MoDataDF["TQmean"] = DataDF["Discharge"].resample('MS').apply(CalcTqmean)
     MoDataDF["R-B Index"] = DataDF["Discharge"].resample('MS').apply(CalcRBindex)
     
     
