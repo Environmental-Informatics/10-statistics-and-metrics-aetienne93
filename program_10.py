@@ -77,7 +77,7 @@ def ClipData( DataDF, startDate, endDate ):
     #I learned this in the last assignment, replaces any values that fall below zero
     #with NAN- and it actually works when graphing
     for i in range(0, len(DataDF)-1):
-        if DataDF['Discharge'].iloc[i] < 0:
+        if DataDF['Discharge'].iloc[i] <= 0:
             DataDF['Discharge'].iloc[i] = np.nan
     
     
