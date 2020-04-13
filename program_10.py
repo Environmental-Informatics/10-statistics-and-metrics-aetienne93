@@ -438,7 +438,42 @@ if __name__ == '__main__':
         
         
     #Test user defined functions for each data set
+        #Preparing the two data files and executing each function     
+    DataDF, MissingValues =ReadData("WildcatCreek_Discharge_03335000_19540601-20200315.txt")
+    DataDF, MissingValues = ClipData(DataDF,'1969-10-01','2019-09-30')
+    WC_WYDataDF = GetAnnualStatistics(DataDF)
+    WC_MoDataDF = GetMonthlyStatistics(DataDF)
+    WC_AnnualAverages = GetAnnualAverages(WC_WYDataDF)
+    WC_MonthlyAverages = GetMonthlyAverages(WC_MoDataDF)
+    
+    DataDF, MissingValues =ReadData("TippecanoeRiver_Discharge_03331500_19431001-20200315.txt") 
+    DataDF, MissingValues = ClipData(DataDF,'1969-10-01','2019-09-30')
+    TC_WYDataDF = GetAnnualStatistics(DataDF)
+    TC_MoDataDF = GetMonthlyStatistics(DataDF)
+    TC_AnnualAverages = GetAnnualAverages(TC_WYDataDF)
+    TC_MonthlyAverages = GetMonthlyAverages(TC_MoDataDF)
+    
+    #Writing Annual Metrics csv
+    AnnualMetrics = WC_WYDataDF
+    AnnualMetrics = AnnualMetrics.append(TC_WYDataDF)
+    AnnualMetrics.to_csv('Annual_Metrics.csv', sep=',', index=True) 
+    
+    #Writing Monthly Metrics csv
+    MonMets = WC_MoDataDF
+    MonMets = MonMets.append(TC_MoDataDF)
+    MonMets.to_csv('Monthly_Metrics.csv', sep=',', index=True) 
+    
+    #Writing Annual Averages txt
+    AvgAnnMet = WC_AnnualAverages
+    AvgAnnMet = AvgAnnMet.append(TC_AnnualAverages)
+    AvgAnnMet.to_csv('Average_Annual_Metrics.txt', sep='\t', index=True) 
+    
+    #Writing Monthly Averages txt
+    AvgMonMet = WC_MonthlyAverages
+    AvgMonMet = AvgMonMet.append(TC_MonthlyAverages)
+    AvgMonMet.to_csv('Average_Monthly_Metrics.txt', sep='\t', index=True) 
      
+    '''
     WC_WYDataDF = WYDataDF['Wildcat']
     WC_WYDataDF['Station'] = 'Wildcat'
         
@@ -471,4 +506,4 @@ if __name__ == '__main__':
     WC_moavg=WC_moavg.append(TR_moavg)
     #Output corrected monthly average streamflow data to TAB delimited .txt file
     WC_moavg.to_csv('Average_Monthly_Metrics.txt', sep='\t', index = True)    
-                
+    '''
