@@ -101,6 +101,12 @@ def GetAnnualStatistics(DataDF):
     annual values for each water year.  Water year, as defined by the USGS,
     starts on October 1."""
     
+    colnames = ['site_no','Mean Flow', 'Peak Flow','Median Flow','Coeff Var', 'Skew','Tqmean','R-B Index','7Q','3xMedian']
+   #resampling annually starting at the start of october
+    WYDataDF=DataDF.resample('AS-OCT').mean() 
+    #create empty dataframe
+    WYDataDF = pd.DataFrame(0, index=WYDataDF.index,columns=colnames) 
+   
     WYDataDF = DataDF.resample('AS-OCT').mean()
     WYDataDF.rename(columns={"Discharge":"Mean Flow"}, inplace=True)
     WYDataDF["Peak Flow"] = DataDF["Discharge"].resample('AS-OCT').max()
