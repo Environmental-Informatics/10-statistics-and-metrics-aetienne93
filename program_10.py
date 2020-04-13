@@ -104,13 +104,12 @@ def GetAnnualStatistics(DataDF):
     WYDataDF = DataDF.resample('AS-OCT').mean()
     WYDataDF.rename(columns={"Discharge":"Mean Flow"}, inplace=True)
     WYDataDF["Peak Flow"] = DataDF["Discharge"].resample('AS-OCT').max()
-    WYDataDF["Median"] = DataDF["Discharge"].resample('AS-OCT').median()
+    WYDataDF["Median Flow"] = DataDF["Discharge"].resample('AS-OCT').median()
     WYDataDF["Coeff Var"] = DataDF["Discharge"].resample('AS-OCT').std() / WYDataDF["Mean Flow"] * 100.
     WYDataDF["Skew"] = DataDF["Discharge"].resample('AS-OCT').apply(stats.skew)
     WYDataDF["Tqmean"] = DataDF["Discharge"].resample('AS-OCT').apply(CalcTqmean)
     WYDataDF["R-B Index"] = DataDF["Discharge"].resample('AS-OCT').apply(CalcRBindex)
     WYDataDF["7Q"] = DataDF["Discharge"].resample('AS-OCT').apply(Calc7Q)
-    WYDataDF["3xMedian"] = DataDF["Discharge"].resample('AS-OCT').apply(CalcExceed3TimesMedian)
     
     return ( WYDataDF )
 
